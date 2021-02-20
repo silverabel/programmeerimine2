@@ -1,6 +1,6 @@
 const mysql = require('mysql');
 
-const sqllogin = require('./sqllogin.json');
+const { sqllogin } = require('./config');
 const pool = mysql.createPool(sqllogin);
 
 exports.sql = function(query, onData, onError) {

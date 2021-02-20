@@ -1,3 +1,4 @@
+const { port } = require('./config');
 const express = require('express');
 
 const oppeainedRoute = require('./routes/oppeained');
@@ -13,4 +14,4 @@ app.use('/oppejoud', oppejoudRoute);
 app.use('/kursused', kursusedRoute);
 app.use('/loengud', loengudRoute);
 
-app.listen(80, () => console.log('Server go brr'));
+app.listen(port, () => console.log('Listening to port ' + port));
