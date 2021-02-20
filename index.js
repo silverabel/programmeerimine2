@@ -1,10 +1,10 @@
 const { port } = require('./config');
 const express = require('express');
 
-const oppeainedRoute = require('./routes/oppeained');
-const oppejoudRoute = require('./routes/oppejoud');
-const kursusedRoute = require('./routes/kursused');
-const loengudRoute = require('./routes/loengud');
+const oppeainedRoute = require('./routes/oppeainedRoute');
+const oppejoudRoute = require('./routes/oppejoudRoute');
+const kursusedRoute = require('./routes/kursusedRoute');
+const loengudRoute = require('./routes/loengudRoute');
 
 const app = express();
 app.use(express.json());

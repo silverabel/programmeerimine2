@@ -1,11 +1,7 @@
 const { sql, getTabeliNimi } = require('../sql');
-const express = require('express');
-const router = express.Router();
-
 const õppejõudTabel = getTabeliNimi('Õppejõud');
 
-
-router.get('', (req, res) => {
+exports.getAll = (req, res) => {
   let SQLPäring = 'SELECT * FROM ' + õppejõudTabel;
   let whereString = '';
   for (const [key, value] of Object.entries(req.query)) {
@@ -21,17 +17,17 @@ router.get('', (req, res) => {
   }, viga => {
     res.status(500).json({"Sõnum": "Viga päringus", viga});
   });
-});
+}
 
-router.get('/:id', (req, res) => {
+exports.getByID = (req, res) => {
   sql(`SELECT * FROM ${õppejõudTabel} WHERE ID = ${req.params.id}`, result => {
     result[0] ? res.status(200).json(result[0]) : res.status(404).json({"message": "Not found"});
   }, viga => {
     res.status(500).json({"Sõnum": "Viga päringus", viga});
   });
-});
+}
 
-router.post('', (req, res) => {
+exports.post = (req, res) => {
   let viga = '';
   if (!req.body.Nimi) viga += 'Nimi puudu; ';
   if (viga) return res.status(500).json({"Sõnum": "Viga andmetes", viga});
@@ -51,18 +47,18 @@ router.post('', (req, res) => {
   }, viga => {
     res.status(500).json({"Sõnum": "Viga päringus", viga});
   });
-});
+}
 
-router.delete('/:id', (req, res) => {
+exports.deleteByID = (req, res) => {
   sql(`DELETE FROM ${õppejõudTabel} WHERE ID = ${req.params.id}`, result => {
     result.affectedRows ? res.status(200).json({"Sõnum": `Õppejõud ID-ga ${req.params.id} edukalt kustutatud`}) 
                         : res.status(404).json({"Sõnum": "Sellise ID-ga õppejõudu ei leitud"});
   }, viga => {
     res.status(500).json({"Sõnum": "Viga päringus", viga});
   });
-});
+}
 
-router.patch('/:id', (req, res) => {
+exports.patchByID = (req, res) => {
   väärtused = '';
   ['Nimi'].forEach(veerg => {
     if (req.body[veerg]) {
@@ -79,6 +75,5 @@ router.patch('/:id', (req, res) => {
   }, viga => {
     res.status(500).json({"Sõnum": "Viga päringus", viga});
   });
-});
+}
 
-module.exports = router;

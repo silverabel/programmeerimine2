@@ -1,18 +1,11 @@
-const mysql = require('mysql');
-
 const { sqllogin } = require('./config');
-const pool = mysql.createPool(sqllogin);
+const mysql = require('mysql');
+const util = require('util');
 
-exports.sql = function(query, onData, onError) {
-  try {
-    pool.query(query, function(error, results, fields) {
-      error ? onError(error) : onData(results);
-    });
-  }
-  catch (error) {
-    if (onError !== undefined) onError(error);
-  };
-};
+const pool = mysql.createPool(sqllogin);
+pool.query = util.promisify(pool.query);
+
+exports.SQLPool = pool;
 
 exports.getTabeliNimi = function(tabeliNimi) {
   return 'Prog2_' + tabeliNimi;
