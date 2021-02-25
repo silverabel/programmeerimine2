@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { getAll, getByID, post, deleteByID, patchByID  } = require('../controllers/oppejoudController');
+const { getAll, getByID, post, deleteByID, patchByID } = require('../controllers/oppejoudController');
 
 router.get('', getAll);
 router.get('/:id', getByID);

@@ -1,5 +1,6 @@
 const config = {
-  "port": "80"
+  "port": "80",
+  "tablePrefix": "Prog2_"
 }
 
 config.sqllogin = {

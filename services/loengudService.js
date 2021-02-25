@@ -1,5 +1,5 @@
 const { SQLPool, getTabeliNimi } = require('../sql');
-const tableName = getTabeliNimi('Õppeaine');
+const tableName = getTabeliNimi('Loeng');
 
 exports.getAll = req => {
   let SQLPäring = 'SELECT * FROM ' + tableName;
@@ -32,7 +32,7 @@ exports.getByID = req => {
 exports.post = req => {
   let veerud = '';
   let väärtused = '';
-  ['Nimi', 'Kood', 'Maht', 'ÕppejõudID'].forEach(veerg => {
+  ['Kommentaar', 'Kuupäev', 'Algusaeg', 'Lõppaeg', 'ÕppeaineID', 'KohtID'].forEach(veerg => {
     if (req.body[veerg]) {
       veerud += veerud ? ', ' + veerg : veerg;
       väärtus = `"${req.body[veerg]}"`;

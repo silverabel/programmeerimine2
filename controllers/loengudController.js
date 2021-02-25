@@ -1,4 +1,4 @@
-const service = require('../services/oppejoudService');
+const service = require('../services/loengudService');
 
 exports.getAll = async (req, res) => {
   try {
@@ -22,7 +22,12 @@ exports.getByID = async (req, res) => {
 
 exports.post = async (req, res) => {
   let viga = '';
-  if (!req.body.Nimi)                        viga += 'Nimi puudu; ';
+  if (!req.body.Kuupäev)                         viga += 'Kuupäev puudu; ';
+  if (!req.body.Algusaeg)                        viga += 'Algusaeg puudu; ';
+  if (!req.body.Lõppaeg)                         viga += 'Lõppaeg puudu; ';
+  if (!req.body.ÕppeaineID)                      viga += 'ÕppeaineID puudu; ';
+  if (isNaN(req.body.ÕppeaineID))                viga += 'ÕppeaineID peab olema number; ';
+  if (req.body.KohtID && isNaN(req.body.KohtID)) viga += 'KohtID peab olema number; ';
   if (viga) return res.status(500).json({"Sõnum": "Viga andmetes", viga});
   
   try {
@@ -32,14 +37,13 @@ exports.post = async (req, res) => {
   catch(error) {
     res.status(500).json(error);
   }
-    
 }
 
 exports.deleteByID = async (req, res) => {
   try {
     let result = await service.deleteByID(req);
-    result.affectedRows ? res.status(200).json({"Sõnum": `Õppejõud ID-ga ${req.params.id} edukalt kustutatud`}) 
-                        : res.status(404).json({"Sõnum": "Sellise ID-ga õppejõudu ei leitud"});
+    result.affectedRows ? res.status(200).json({"Sõnum": `Loeng ID-ga ${req.params.id} edukalt kustutatud`}) 
+                        : res.status(404).json({"Sõnum": "Sellise ID-ga loengut ei leitud"});
   }
   catch(error) {
     res.status(500).json({error});
@@ -47,8 +51,13 @@ exports.deleteByID = async (req, res) => {
 }
 
 exports.patchByID = async (req, res) => {
+  let viga = '';
+  if (req.body.ÕppeaineID && isNaN(req.body.ÕppeaineID)) viga += 'ÕppeaineID peab olema number; ';
+  if (req.body.KohtID && isNaN(req.body.KohtID))         viga += 'KohtID peab olema number; ';
+  if (viga) return res.status(500).json({"Sõnum": "Viga andmetes", viga});
+
   väärtused = '';
-  ['Nimi'].forEach(veerg => {
+  ['Kommentaar', 'Kuupäev', 'Algusaeg', 'Lõppaeg', 'ÕppeaineID', 'KohtID'].forEach(veerg => {
     if (req.body[veerg]) {
       if (väärtused) väärtused += ', ';
       väärtused += `${veerg} = "${req.body[veerg]}"`;
@@ -59,8 +68,8 @@ exports.patchByID = async (req, res) => {
 
   try {
     let result = await service.patchByID(req, väärtused);
-    result.affectedRows ? res.status(200).json({"Sõnum": `Õppejõud ID-ga ${req.params.id} andmed edukalt uuendatud`})
-                        : res.status(404).json({"Sõnum": "Sellise ID-ga õppejõudu ei leitud"});
+    result.affectedRows ? res.status(200).json({"Sõnum": `Loeng ID-ga ${req.params.id} andmed edukalt uuendatud`})
+                        : res.status(404).json({"Sõnum": "Sellise ID-ga loengut ei leitud"});
   }
   catch(error) {
     res.status(500).json({error});
