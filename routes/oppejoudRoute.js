@@ -2,11 +2,15 @@ const express = require('express');
 const router = express.Router();
 
 const { getAll, getByID, post, deleteByID, patchByID } = require('../controllers/oppejoudController');
+const { checkLogin, checkAdmin } = require('../middleware');
 
-router.get('', getAll);
-router.get('/:id', getByID);
-router.post('', post);
-router.delete('/:id', deleteByID);
-router.patch('/:id', patchByID);
+router
+  .use(checkLogin)
+  .get('', getAll)
+  .get('/:id', getByID)
+  .use(checkAdmin)
+  .post('', post)
+  .delete('/:id', deleteByID)
+  .patch('/:id', patchByID);
 
 module.exports = router;

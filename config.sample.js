@@ -1,6 +1,7 @@
 const config = {
   "port": "80",
-  "tablePrefix": "Prog2_"
+  "tablePrefix": "Prog2_",
+  "jwtSecret": "secret",
 }
 
 config.sqllogin = {
@@ -9,7 +10,7 @@ config.sqllogin = {
   "user": "",
   "password": "",
   "database": "",
-  "multipleStatements": "true"
+  "multipleStatements": "true",
 }
 
 module.exports = config;

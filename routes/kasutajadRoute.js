@@ -1,15 +1,15 @@
 const express = require('express');
 const router = express.Router();
 
-const { getAll, getByID, post, deleteByID, patchByID } = require('../controllers/kursusedController');
+const { getAll, getByID, create, login, deleteByID, patchByID } = require('../controllers/kasutajadController');
 const { checkLogin, checkAdmin } = require('../middleware');
 
 router
-  .use(checkLogin)
+  .post('', create)
+  .post('/login', login)
+  .use(checkLogin, checkAdmin)
   .get('', getAll)
   .get('/:id', getByID)
-  .use(checkAdmin)
-  .post('', post)
   .delete('/:id', deleteByID)
   .patch('/:id', patchByID);
 
