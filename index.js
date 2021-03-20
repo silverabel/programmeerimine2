@@ -4,7 +4,7 @@ const app = express();
 
 app.use(express.json());
 
-const { oppeainedRoute, oppejoudRoute, kursusedRoute, loengudRoute, kasutajadRoute } = require('./routes');
+const { oppeainedRoute, oppejoudRoute, kursusedRoute, loengudRoute, kasutajadRoute } = require('./api/routes');
 
 app
   .use('/oppeained', oppeainedRoute)

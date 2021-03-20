@@ -1,5 +1,5 @@
 const jsonwebtoken = require('jsonwebtoken');
-const { jwtSecret } = require('./config');
+const { jwtSecret } = require('../config');
 
 exports.checkLogin = async (req, res, next) => {
   if (!req.headers.authorization) return res.status(403).json({"Error": "No authorization header"});

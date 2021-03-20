@@ -1,8 +1,9 @@
-const service = require('../services/kursusedService');
+const service = require('../services');
+const tableName = 'Kursus';
 
 exports.getAll = async (req, res) => {
   try {
-    let result = await service.getAll(req);
+    let result = await service.getAll(tableName, req);
     result[0] ? res.status(200).json({"result": [result]}) : res.status(404).json({"Message": "Not found"});
   }
   catch(error) {
@@ -12,7 +13,7 @@ exports.getAll = async (req, res) => {
 
 exports.getByID = async (req, res) => {
   try {
-    let result = await service.getByID(req);
+    let result = await service.getByID(tableName, req);
     result[0] ? res.status(200).json({"result": [result]}) : res.status(404).json({"Message": "Not found"});
   }
   catch(error) {
@@ -29,7 +30,7 @@ exports.post = async (req, res) => {
   if (viga) return res.status(500).json({"Sõnum": "Viga andmetes", viga});
   
   try {
-    let result = await service.post(req);
+    let result = await service.post(tableName, req);
     res.status(201).json({"ID": result.insertId});
   }
   catch(error) {
@@ -39,7 +40,7 @@ exports.post = async (req, res) => {
 
 exports.deleteByID = async (req, res) => {
   try {
-    let result = await service.deleteByID(req);
+    let result = await service.deleteByID(tableName, req);
     result.affectedRows ? res.status(200).json({"Sõnum": `Kursus ID-ga ${req.params.id} edukalt kustutatud`}) 
                         : res.status(404).json({"Sõnum": "Sellise ID-ga kursust ei leitud"});
   }
@@ -64,7 +65,7 @@ exports.patchByID = async (req, res) => {
   if (!väärtused) return res.status(500).json({"Sõnum": "Ei leitud andmeid, mida uuendada"});
 
   try {
-    let result = await service.patchByID(req, väärtused);
+    let result = await service.patchByID(tableName, req.params.id, väärtused);
     result.affectedRows ? res.status(200).json({"Sõnum": `Kursus ID-ga ${req.params.id} andmed edukalt uuendatud`})
                         : res.status(404).json({"Sõnum": "Sellise ID-ga kursust ei leitud"});
   }
