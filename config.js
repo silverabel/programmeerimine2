@@ -1,15 +1,14 @@
 const config = {
-  "port": "80",
-  "tablePrefix": "Prog2_",
+  "tablePrefix": "",
   "jwtSecret": "secret",
 }
 
 config.sqllogin = {
   "connectionLimit": "10",
-  "host": "",
-  "user": "",
-  "password": "",
-  "database": "",
+  "host": "mysql",
+  "user": "root",
+  "password": "secret",
+  "database": "programmeerimine2",
   "multipleStatements": "true",
 }
 
