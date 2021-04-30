@@ -28,7 +28,7 @@ exports.getAll = (tableName, req) => {
 
 exports.getByID = (tableName, req) => {
   try {
-    return SQLPool.query(`SELECT * FROM ${getTabeliNimi(tableName)} WHERE ID = ?`, req.params.id);
+    return SQLPool.query(`SELECT * FROM ${getTabeliNimi(tableName)} WHERE ID = ?`, [req.params.id]);
   }
   catch(error) {
     throw error;
@@ -49,6 +49,7 @@ exports.post = (tableName, req) => {
       values[field] = req.body[field];
     }
   });
+  
   try {
     return SQLPool.query(`INSERT INTO ${getTabeliNimi(tableName)} SET ?`, values);
   }
@@ -99,7 +100,7 @@ exports.login = async (tableName, reqBody) => {
 
 exports.deleteByID = (tableName, req) => {
   try {
-    return SQLPool.query(`DELETE FROM ${getTabeliNimi(tableName)} WHERE ID = ?`, req.params.id);
+    return SQLPool.query(`DELETE FROM ${getTabeliNimi(tableName)} WHERE ID = ?`, [req.params.id]);
   }
   catch(error) {
     throw error;
@@ -108,7 +109,7 @@ exports.deleteByID = (tableName, req) => {
 
 exports.patchByID = (tableName, id, values) => {
   try {
-    return SQLPool.query(`UPDATE ${getTabeliNimi(tableName)} SET ${values} WHERE ID = ?`, id);
+    return SQLPool.query(`UPDATE ${getTabeliNimi(tableName)} SET ? WHERE ID = ?`, [values, id]);
   }
   catch(error) {
     throw error;

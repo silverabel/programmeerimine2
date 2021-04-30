@@ -3,7 +3,6 @@ const mysql = require('mysql');
 const util = require('util');
 
 const pool = mysql.createPool(sqllogin);
-
 pool.query = util.promisify(pool.query);
 
 const tableQuery = `
@@ -72,18 +71,18 @@ const tableQuery = `
     CONSTRAINT FK_Kursus_Õppeained_KursusID FOREIGN KEY (KursusID) REFERENCES Kursus (ID) ON DELETE NO ACTION ON UPDATE NO ACTION,
     CONSTRAINT FK_Kursus_Õppeained_ÕppeaineID FOREIGN KEY (ÕppeaineID) REFERENCES Õppeaine (ID) ON DELETE NO ACTION ON UPDATE NO ACTION
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-  INSERT INTO Roll (ID, Nimetus) VALUES (1, 'Admin');
-  INSERT INTO Roll (ID, Nimetus) VALUES (2, 'Tavakasutaja');
 `;
 
 (async function attemptConnection() {
   try {
     await pool.query(tableQuery);
-    console.log('Connection success, db initialized');
+
+    const result = await pool.query(`SELECT id FROM Roll WHERE Nimetus = 'Admin'`);
+    console.log(result.length == 0);
+    if (result.length == 0) pool.query(`INSERT INTO Roll (Nimetus) VALUES ('Admin'), ('Tavakasutaja');`);
   }
   catch(error) {
-    console.log('Connection error, retrying in 2 seconds');
+    console.log(error);
     setTimeout(attemptConnection, 2000);
   }
 })();

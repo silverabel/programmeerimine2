@@ -4,7 +4,7 @@ const tableName = 'Õppejõud';
 exports.getAll = async (req, res) => {
   try {
     let result = await service.getAll(tableName, req);
-    result[0] ? res.status(200).json({"result": [result]}) : res.status(404).json({"Message": "Not found"});
+    result[0] ? res.status(200).json({"result": result}) : res.status(404).json({"Message": "Not found"});
   }
   catch(error) {
     res.status(500).json({error});
@@ -14,7 +14,7 @@ exports.getAll = async (req, res) => {
 exports.getByID = async (req, res) => {
   try {
     let result = await service.getByID(tableName, req);
-    result[0] ? res.status(200).json({"result": [result]}) : res.status(404).json({"Message": "Not found"});
+    result[0] ? res.status(200).json({"result": result[0]}) : res.status(404).json({"Message": "Not found"});
   }
   catch(error) {
     res.status(500).json({error});
@@ -48,15 +48,12 @@ exports.deleteByID = async (req, res) => {
 }
 
 exports.patchByID = async (req, res) => {
-  väärtused = '';
+  väärtused = {};
   ['Nimi'].forEach(veerg => {
-    if (req.body[veerg]) {
-      if (väärtused) väärtused += ', ';
-      väärtused += `${veerg} = "${req.body[veerg]}"`;
-    }
+    if (req.body[veerg]) väärtused[veerg] = req.body[veerg];
   });
 
-  if (!väärtused) return res.status(500).json({"Sõnum": "Ei leitud andmeid, mida uuendada"});
+  if (väärtused === {}) return res.status(500).json({"Sõnum": "Ei leitud andmeid, mida uuendada"});
 
   try {
     let result = await service.patchByID(tableName, req.params.id, väärtused);
