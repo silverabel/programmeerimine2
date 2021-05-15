@@ -78,8 +78,7 @@ const tableQuery = `
     await pool.query(tableQuery);
 
     const result = await pool.query(`SELECT id FROM Roll WHERE Nimetus = 'Admin'`);
-    console.log(result.length == 0);
-    if (result.length == 0) pool.query(`INSERT INTO Roll (Nimetus) VALUES ('Admin'), ('Tavakasutaja');`);
+    if (result[0].id !== 1) pool.query(`INSERT INTO Roll (id, Nimetus) VALUES (1, 'Admin'), (2, 'Tavakasutaja');`);
   }
   catch(error) {
     console.log(error);
